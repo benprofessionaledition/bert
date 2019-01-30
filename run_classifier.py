@@ -402,8 +402,6 @@ class ManaProcessor(DataProcessor):
         """Creates examples for the training and dev sets."""
         examples = []
         for (i, line) in enumerate(lines):
-            if i == 0:  # for header
-                continue
             single_example = self._create_example(line, set_type)
             examples.append(single_example)
         return examples
