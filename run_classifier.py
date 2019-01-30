@@ -414,7 +414,10 @@ class ManaProcessor(DataProcessor):
         except:
             print("Error on line: %s" % str(line))
             raise
-        label = tokenization.convert_to_unicode(line[-1])
+        if set_type == 'test':
+            label = self.get_labels()[0] # because it's not going to have one and we don't care
+        else:
+            label = tokenization.convert_to_unicode(line[-1])
         single_example = InputExample(guid=guid, text_a=text_a, label=label)
         return single_example
 
