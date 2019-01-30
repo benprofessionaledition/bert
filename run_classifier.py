@@ -414,7 +414,7 @@ class ManaProcessor(DataProcessor):
                               tokenization.convert_to_unicode(line[0]))
             text_a = tokenization.convert_to_unicode(line[1])
         except:
-            println("Error on line: %s" % str(line))
+            print("Error on line: %s" % str(line))
             raise
         if set_type == "test":
             label = "GREETING CARDS"
