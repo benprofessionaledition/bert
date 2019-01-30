@@ -410,7 +410,7 @@ class ManaProcessor(DataProcessor):
         try:
             guid = "%s-%s" % (set_type,
                               tokenization.convert_to_unicode(line[0]))
-            text_a = tokenization.convert_to_unicode(line[1])
+            text_a = tokenization.convert_to_unicode(line[0])
         except:
             print("Error on line: %s" % str(line))
             raise
