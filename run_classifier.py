@@ -416,10 +416,7 @@ class ManaProcessor(DataProcessor):
         except:
             print("Error on line: %s" % str(line))
             raise
-        if set_type == "test":
-            label = "GREETING CARDS"
-        else:
-            label = tokenization.convert_to_unicode(line[-1])
+        label = tokenization.convert_to_unicode(line[-1])
         single_example = InputExample(guid=guid, text_a=text_a, label=label)
         return single_example
 
