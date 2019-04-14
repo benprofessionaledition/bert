@@ -26,6 +26,8 @@ import optimization
 import tokenization
 import tensorflow as tf
 
+tf.logging.propagate = True
+
 flags = tf.flags
 
 FLAGS = flags.FLAGS
@@ -394,6 +396,12 @@ class ManaProcessor(DataProcessor):
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
 
+    def get_unlabeled_test_examples(self, filename):
+        rows = self._read_tsv(filename)
+        arbitrary_label = self.get_labels()[0]
+        rows = ['\t'.join([r[0], arbitrary_label]) for r in rows]
+        return self._create_examples(rows, "test")
+
     def get_labels(self):
         """See base class."""
         raise NotImplementedError
@@ -401,9 +409,11 @@ class ManaProcessor(DataProcessor):
     def _create_examples(self, lines, set_type):
         """Creates examples for the training and dev sets."""
         examples = []
-        for (i, line) in enumerate(lines):
+        i = 0
+        for i, line in enumerate(lines):
             single_example = self._create_example(line, set_type)
             examples.append(single_example)
+        tf.logging.info("Converted {} examples".format(i))
         return examples
 
     def _create_example(self, line, set_type):
