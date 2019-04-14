@@ -18,4 +18,4 @@ OUTPUT_DIR=$(dirname $2)
 
 docker run -it --mount type=bind,src=$1,dst=$1 \
     --mount type=bind,src=$OUTPUT_DIR,dst=$OUTPUT_DIR \
-    manatainer:latest python predict_k12.py $1 $2
+    blevine0001/k12ai python predict_k12.py $1 $2
