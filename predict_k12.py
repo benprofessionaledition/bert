@@ -61,8 +61,9 @@ def read_input_examples(filename):
     proc = ManaProcessor169()
     global input_df
     input_df = temp_df = pd.read_csv(filename, header=None)
-    temp_df[0] = temp_df[0].map(lambda x: str(x).replace('\t', ' ').replace('\n', ' ').lower())
-    return proc._create_examples(temp_df.values, 'test')
+    data_column = temp_df[temp_df.columns[-1]]
+    data_column = data_column.map(lambda x: str(x).replace('\t', ' ').replace('\n', ' ').lower())
+    return proc._create_examples(data_column, 'test')
 
 def main(_):
     tf.logging.set_verbosity(tf.logging.DEBUG)
@@ -183,14 +184,14 @@ def main(_):
         top3_indices = row.argsort()[::-1][:3]
         # index 1, score 1, index 2, score 2, etc
         l = []
-        l.append(str(input_df.values[i][0]).replace('\n', ''))
+        l += [input_df.values[i][j] for j in range(input_df.shape[1] - 1)] # all but the original input
+        l.append(str(input_df.values[i][-1]).replace('\n', '')) # take the original input and remove newlines
         for v in top3_indices:
             l.append(all_topics[v])
             l.append(row[v])
         top3_scores.append(l)
 
-    score_df = pd.DataFrame(top3_scores, columns=["Input", "Index 1", "Score 1", "Index 2", "Score 2", "Index 3", "Score 3"])
-    score_df['Input'] = score_df['Input'].map(lambda x: str(x).replace('\n', ''))
+    score_df = pd.DataFrame(top3_scores, columns=list(input_df.columns.values) + ["Class 1", "Score 1", "Class 2", "Score 2", "Class 3", "Score 3"])
     score_df.to_csv(output_predict_file, index=None)
 
 if __name__ == '__main__':
