@@ -60,7 +60,7 @@ def read_input_examples(filename):
     """
     proc = ManaProcessor169()
     global input_df
-    input_df = temp_df = pd.read_csv(filename, header=None)
+    input_df = temp_df = pd.read_csv(filename)
     data_column = temp_df[temp_df.columns[-1]]
     data_column = data_column.map(lambda x: str(x).replace('\t', ' ').replace('\n', ' ').lower())
     return proc._create_examples(data_column, 'test')
